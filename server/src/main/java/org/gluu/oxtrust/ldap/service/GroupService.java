@@ -65,6 +65,7 @@ public class GroupService implements Serializable, IGroupService {
 		List<GluuGroup> groups= findGroups(displayNameGroup, 1);
 		if (groups == null || groups.size() == 0) {
 			ldapEntryManager.persist(group);
+			log.info("GROUP "+group.getDisplayName()+" ADDED SUCCESSFULLY");
 		} else {
 			throw new DuplicateEntryException("Duplicate displayName: " + group.getDisplayName());
 		}
@@ -76,7 +77,7 @@ public class GroupService implements Serializable, IGroupService {
 	@Override
 	public void updateGroup(GluuGroup group) {
 		ldapEntryManager.merge(group);
-
+		log.info("GROUP "+group.getDisplayName()+" UPDATED SUCCESSFULLY");
 	}
 
 	/* (non-Javadoc)
@@ -95,6 +96,7 @@ public class GroupService implements Serializable, IGroupService {
     				updatedGroupDNs.remove(group.getDn());
     				person.setMemberOf(updatedGroupDNs);
     				personService.updatePerson(person);
+    				log.info("GROUP "+group.getDisplayName()+" REMOVED SUCCESSFULLY");
 			    }
 			}
 		}
@@ -166,7 +168,7 @@ public class GroupService implements Serializable, IGroupService {
 	public int countGroups() {
 		GluuGroup gluuGroup = new GluuGroup();
 		gluuGroup.setBaseDn(getDnForGroup(null));
-
+		log.info("COUNT GROUPS");
 		return ldapEntryManager.countEntries(gluuGroup);
 	}
 

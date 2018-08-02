@@ -107,6 +107,7 @@ public class PersonService implements Serializable, IPersonService {
 		if (persons == null || persons.size() == 0) {
 			person.setCreationDate(new Date());
 			ldapEntryManager.persist(person);
+			log.info("USER "+person.getDisplayName()+" ADDED SUCCESSFULLY");
 		} else {
 			throw new DuplicateEntryException("Duplicate UID value: " + person.getUid());
 		}
@@ -130,7 +131,7 @@ public class PersonService implements Serializable, IPersonService {
 					ISODateTimeFormat.dateTime().withZoneUTC().print(updateDate.getTime()));
 		}
 		ldapEntryManager.merge(person);
-
+		log.info("USER "+person.getDisplayName()+" UPDATED SUCCESSFULLY");
 	}
 
 	/*
@@ -144,6 +145,7 @@ public class PersonService implements Serializable, IPersonService {
 	public void removePerson(GluuCustomPerson person) {
 		// Remove person
 		ldapEntryManager.removeWithSubtree(person.getDn());
+		log.info("USER "+person.getDisplayName()+" REMOVED SUCCESSFULLY");
 	}
 
 	/*
@@ -188,7 +190,7 @@ public class PersonService implements Serializable, IPersonService {
 
 		List<GluuCustomPerson> result = ldapEntryManager.findEntries(getDnForPerson(null), GluuCustomPerson.class,
 				searchFilter, 0);
-
+		log.info("USERS SEARCH PERFORMED");
 		return result;
 	}
 
@@ -202,6 +204,7 @@ public class PersonService implements Serializable, IPersonService {
 	@Override
 	public List<GluuCustomPerson> findPersons(GluuCustomPerson person, int sizeLimit) {
 		person.setBaseDn(getDnForPerson(null));
+		log.info("PERSON ENTRIES SEARCH PERFORMED");
 		return ldapEntryManager.findEntries(person, 0, sizeLimit);
 	}
 
@@ -259,7 +262,7 @@ public class PersonService implements Serializable, IPersonService {
 	public List<GluuCustomPerson> findAllPersons(String[] returnAttributes) {
 		List<GluuCustomPerson> result = ldapEntryManager.findEntries(getDnForPerson(null), GluuCustomPerson.class,
 				returnAttributes, null);
-
+		log.info("FIND ALL PERSONS PERFORMED");
 		return result;
 	}
 
@@ -410,7 +413,7 @@ public class PersonService implements Serializable, IPersonService {
 	public int countPersons() {
 		GluuCustomPerson gluuBasePerson = new GluuCustomPerson();
 		gluuBasePerson.setBaseDn(getDnForPerson(null));
-
+		log.info("PERFORMING PERSONS COUNT");
 		return ldapEntryManager.countEntries(gluuBasePerson);
 	}
 
