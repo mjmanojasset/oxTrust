@@ -68,7 +68,7 @@ public class ClientService implements Serializable {
      */
     public void addClient(OxAuthClient client) {
         ldapEntryManager.persist(client);
-        log.info("CLIENT "+client.getDisplayName()+" ADDED SUCCESSFULLY");
+        log.info("*****************CLIENT "+client.getDisplayName()+" ADDED SUCCESSFULLY");
     }
 
     /**
@@ -78,7 +78,7 @@ public class ClientService implements Serializable {
      */
     public void removeClient(OxAuthClient client) {
         ldapEntryManager.removeWithSubtree(client.getDn());
-        log.info("CLIENT "+client.getDisplayName()+" REMOVED SUCCESSFULLY");
+        log.info("*****************CLIENT "+client.getDisplayName()+" REMOVED SUCCESSFULLY");
     }
 
     /**
@@ -130,7 +130,7 @@ public class ClientService implements Serializable {
      */
     public void updateClient(OxAuthClient client) {
         ldapEntryManager.merge(client);
-        log.info("CLIENT "+client.getDisplayName()+" UPDATED SUCCESSFULLY");
+        log.info("*****************CLIENT "+client.getDisplayName()+" UPDATED SUCCESSFULLY");
     }
 
     /**
@@ -140,7 +140,7 @@ public class ClientService implements Serializable {
      */
     public void updateCustomClient(OxAuthCustomClient client) {
         ldapEntryManager.merge(client);
-        log.info("CLIENT "+client.getDisplayName()+" UPDATED SUCCESSFULLY");
+        log.info("*****************CLIENT "+client.getDisplayName()+" UPDATED SUCCESSFULLY");
     }
 
     /**
@@ -310,9 +310,6 @@ public class ClientService implements Serializable {
             OxAuthCustomClient client = new OxAuthCustomClient();
             log.info("getting dn for client ");
             client.setBaseDn(getDnForClient(null));
-            log.info("name ", name);
-            log.info("value ", value);
-            log.info("setting attribute value ");
             client.setAttribute(name, value);
 
             log.info("finding entries ");
